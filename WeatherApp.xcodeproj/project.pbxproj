@@ -64,11 +64,11 @@
 				6A51D880246844C6007BF245 /* SceneDelegate.swift */,
 				6A51D882246844C6007BF245 /* HomeViewController.swift */,
 				6AAA2C8C2484EDFB00F76714 /* SecondScreenViewController.swift */,
+				6AFD493E24852E5E001607C2 /* ThirdScreenViewController.swift */,
 				6A51D884246844C6007BF245 /* Main.storyboard */,
 				6A51D887246844CA007BF245 /* Assets.xcassets */,
 				6A51D889246844CA007BF245 /* LaunchScreen.storyboard */,
 				6A51D88C246844CA007BF245 /* Info.plist */,
-				6AFD493E24852E5E001607C2 /* ThirdScreenViewController.swift */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";

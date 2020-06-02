@@ -21,28 +21,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     var lat_local = ""
     var lon_local = ""
     
-    
-   
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
-        
-//        let locManager = CLLocationManager()
-//        locManager.requestWhenInUseAuthorization()
-//        let currentLocation: CLLocation!
-//
-//        if
-//           CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
-//           CLLocationManager.authorizationStatus() ==  .authorizedAlways
-//        {
-//            currentLocation = locManager.location
-////            self.lon_local = "\(currentLocation.coordinate.longitude)"
-////            self.lat_local = "\(currentLocation.coordinate.latitude)"
-//
-//            print(currentLocation.coordinate.latitude)
-//            print(currentLocation.coordinate.longitude)
-//        }
         
         BTN_Check.setTitleColor(UIColor(named: "ColorTextLD"), for: .normal)
         BTN_Check.tintColor = UIColor(named: "ColorTextLD")
@@ -66,39 +46,32 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
            flag = false
         
         let locManager = CLLocationManager()
-               //        locManager.requestWhenInUseAuthorization()
-               //        let currentLocation: CLLocation!
-               
 
-               locManager.delegate = self
-               locManager.desiredAccuracy = kCLLocationAccuracyBest
-               locManager.requestWhenInUseAuthorization()
-               locManager.startMonitoringSignificantLocationChanges()
+           locManager.delegate = self
+           locManager.desiredAccuracy = kCLLocationAccuracyBest
+           locManager.requestWhenInUseAuthorization()
+           locManager.startMonitoringSignificantLocationChanges()
 
-               // Check if the user allowed authorization
-               if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-                   CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized)
-               {
-                   
-                   //print("Localiza: \(locManager.location?.coordinate.latitude)")
-                   //print("Localiza: \(locManager.location?.coordinate.longitude)")
-                
-                let lat = "\(locManager.location?.coordinate.latitude)"
-                let lat2 = lat.components(separatedBy: ["(", ")"])
-                
-                let lon = "\(locManager.location?.coordinate.longitude)"
-                let lon2 = lon.components(separatedBy: ["(", ")"])
-                
-                    self.lon_local = lon2[1]
-                    self.lat_local = lat2[1]
-                
-                    self.performSegue(withIdentifier: "SecondScreenView", sender: self)
+           // Check if the user allowed authorization
+           if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+               CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized)
+           {
+            
+            let lat = "\((locManager.location?.coordinate.latitude).unsafelyUnwrapped)"
+            
+            let lon = "\((locManager.location?.coordinate.longitude).unsafelyUnwrapped)"
 
-                   } else {
-                       print("Location not authorized")
-                      
-                   }
-       }
+            
+            self.lon_local = lon
+                self.lat_local = lat
+            
+                self.performSegue(withIdentifier: "SecondScreenView", sender: self)
+
+               } else {
+                   print("Location not authorized")
+                  
+               }
+   }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as? SecondScreenViewController
