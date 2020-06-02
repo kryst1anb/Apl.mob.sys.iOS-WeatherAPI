@@ -27,10 +27,12 @@ class SecondScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       finalCityName = finalCityName.replacingOccurrences(of: " ", with: "+")
+        
         print("loaded view")
-        print(finalCityName)
-        print(finalLon)
-        print(finalLat)
+        print("Final city: \(finalCityName)")
+        print("Final lot: \(finalLon)")
+        print("Final lat: \(finalLat)")
         
         if finalflag == true{
             finalUrl = "https://api.openweathermap.org/data/2.5/forecast?q=\(finalCityName)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
@@ -45,14 +47,26 @@ class SecondScreenViewController: UIViewController {
                     do{
                         guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
                             else {return}
-                        guard let weatherDetails = json["list"] as? [[String: Any]], let weatherMain = json["main"] as? [String: Any]
+                        
+                        //Individuals days (after 3 hours weather)
+                        guard let weatherDetails = json["list"] as? [[String: Any]],
+                            let weatherMain = weatherDetails[0]["main"] as? [String: Any],
+                            let temp = weatherMain["temp"] as? Double,
+                            let weatherMain2 = weatherDetails[0]["weather"] as? [[String: Any]],
+                            let desc = weatherMain2[0]["description"] as? String,
+                            let weather = weatherMain2[0]["main"] as? String
+                            else{return}
+                            
+                         guard let weatherCity = json["city"] as? [String: Any],
+                            let name = weatherCity["name"] as? String,
+                            let country = weatherCity["country"] as? String
                             else {return}
-                        let temp = Int(weatherMain["temp"] as? Double ?? 0)
-                        let description = (weatherDetails.first?["description"] as? String)?.capitalizingFirstLetter()
-                        DispatchQueue.main.async{
-                            self.setWeather(weather: weatherDetails.first?["main"] as? String, description: description, temp: temp)
-                        }
-                    }catch{
+                        
+                            DispatchQueue.main.async{
+                                self.setWeather(weather: weather, description: desc, temp: Int(temp), name: name, country: country)
+                            }
+                    }
+                    catch{
                         print("Error with data...")
                     }
                 }
@@ -60,19 +74,22 @@ class SecondScreenViewController: UIViewController {
             task.resume()
         print("task resume")
         }
-        func setWeather(weather: String?,description: String?, temp: Int){
+    func setWeather(weather: String?,description: String?, temp: Int, name: String?, country: String?){
             descriptionWeather.text = description ?? "---"
             tempWeather.text = "\(temp)"
+        print(temp)
+            cityName.text = "\(name.unsafelyUnwrapped)"
+            countryName.text = "\(country.unsafelyUnwrapped)"
             switch weather {
             case "Sunny":
                 weatherIcon.image = UIImage(named: "Sunny")
+            case "Rain":
+                weatherIcon.image = UIImage(named: "Rainy")
             default:
                 weatherIcon.image = UIImage(named: "Cloudy")
             
             }
-       
     }
-
 }
 
 extension String {
