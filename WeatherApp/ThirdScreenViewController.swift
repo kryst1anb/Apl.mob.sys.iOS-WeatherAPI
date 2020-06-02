@@ -8,11 +8,15 @@
 
 import UIKit
 
-class ThirdScreenViewController: UIViewController {
+class ThirdScreenViewController: UIViewController{
+    
     @IBOutlet weak var toolbar2: UIToolbar!
     @IBOutlet weak var labelCityName: UILabel!
     @IBOutlet weak var labelTemperature: UILabel!
     @IBOutlet weak var labelDescription: UILabel!
+    @IBOutlet weak var labelPressure: UILabel!
+    @IBOutlet weak var labelHumidity: UILabel!
+    @IBOutlet weak var labelWind: UILabel!
     
     var cityName = ""
     var flag = false
@@ -22,6 +26,10 @@ class ThirdScreenViewController: UIViewController {
     var temp = 0
     var desc = ""
     
+    var pressure = 0
+    var humidity = 0
+    var wind = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,6 +38,10 @@ class ThirdScreenViewController: UIViewController {
         labelDescription.text = desc
         toolbar2.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
         toolbar2.setShadowImage(UIImage(), forToolbarPosition: .any)
+        
+        labelPressure.text = "\(pressure)"
+        labelHumidity.text = "\(humidity)"
+        labelWind.text = "\(wind)"
         
     }
     
