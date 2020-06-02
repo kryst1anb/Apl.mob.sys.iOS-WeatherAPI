@@ -12,7 +12,7 @@
         <!--Second Screen View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="SecondScreenViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="SecondScreenViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SecondScreenViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="SecondScreenViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -147,7 +147,7 @@
         <!--Home View Controller-->
         <scene sceneID="cv0-xg-FuN">
             <objects>
-                <viewController storyboardIdentifier="ViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="dNM-NB-FJz" customClass="HomeViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="dNM-NB-FJz" customClass="HomeViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j3i-oq-W7f">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -185,6 +185,9 @@
                                 <state key="normal" backgroundImage="location.circle.fill" catalog="system">
                                     <color key="titleColor" name="ColorTextLD"/>
                                 </state>
+                                <connections>
+                                    <action selector="LocalizationButton:" destination="dNM-NB-FJz" eventType="touchUpInside" id="qXp-o1-Hdd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -194,6 +197,7 @@
                     <connections>
                         <outlet property="BTN_Check" destination="2wj-DR-gXq" id="stq-Vr-2hD"/>
                         <outlet property="BTN_Localization" destination="98f-4N-LwD" id="6uy-Z6-m2w"/>
+                        <outlet property="cityInput" destination="uQN-yv-Cgf" id="8so-zW-eb1"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="SecondScreenView" id="EBf-UP-E3k"/>
                     </connections>
                 </viewController>
@@ -205,7 +209,7 @@
         <!--Third Screen View Controller-->
         <scene sceneID="7hf-Wc-ynu">
             <objects>
-                <viewController storyboardIdentifier="ThirdScreenViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="xdi-qO-pQV" customClass="ThirdScreenViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ThirdScreenViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="xdi-qO-pQV" customClass="ThirdScreenViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EDF-Wf-YGk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
