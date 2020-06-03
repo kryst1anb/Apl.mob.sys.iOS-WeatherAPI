@@ -36,7 +36,7 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     
     var dateArray = [""]
     var tempArray = [""]
-    //var inTtempArray: [Int] = []
+    var stateArray = [""]
     
     var pressure = 0
     var humidity = 0
@@ -45,11 +45,6 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.backgroundColor = UIColor.clear
-        
-        
-
-      //  inTtempArray = tempArray.compactMap({ Int($0) })
-      //  print(inTtempArray)
         
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -64,19 +59,30 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
         labelPressure.text = "\(pressure)"
         labelHumidity.text = "\(humidity)"
         labelWind.text = "\(wind)"
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath) as! MyCell
         let title = self.dateArray[indexPath.row]
         let temp = self.tempArray[indexPath.row]
-        //let cell = UITableViewCell()
-        //cell.textLabel?.text = title
+        let state = self.stateArray[indexPath.row]
+        
+        switch state {
+        case "Sunny":
+            cell.hourImage.image = UIImage(named: "Sunny")
+        case "Rain":
+            cell.hourImage.image = UIImage(named: "Humidity")
+        case "Clouds":
+            cell.hourImage.image = UIImage(named: "Cloudy")
+        case "Clear":
+            cell.hourImage.image = UIImage(named: "Sunny")
+        default:
+            cell.hourImage.image = UIImage(named: "Humidity")
+        }
+    
         cell.labelDate?.text = title
         cell.labelTemp?.text = "\(temp)"
-        cell.hourImage.image = UIImage(named: "Humidity")
-
+        
         cell.backgroundColor = UIColor.clear
         return cell
     }
@@ -96,5 +102,4 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
         vc3?.finalTemp = self.temp
         vc3?.finalDesc = self.desc
     }
-
 }
