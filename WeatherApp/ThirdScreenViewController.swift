@@ -8,6 +8,13 @@
 
 import UIKit
 
+class MyCell: UITableViewCell{
+    
+    @IBOutlet weak var labelDate: UILabel!
+    @IBOutlet weak var labelTemp: UILabel!
+    @IBOutlet weak var hourImage: UIImageView!
+}
+
 class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     @IBOutlet weak var toolbar2: UIToolbar!
@@ -17,7 +24,6 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var labelPressure: UILabel!
     @IBOutlet weak var labelHumidity: UILabel!
     @IBOutlet weak var labelWind: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
     var cityName = ""
@@ -29,6 +35,8 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     var desc = ""
     
     var dateArray = [""]
+    var tempArray = [""]
+    //var inTtempArray: [Int] = []
     
     var pressure = 0
     var humidity = 0
@@ -38,6 +46,10 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         tableView.backgroundColor = UIColor.clear
         
+        
+
+      //  inTtempArray = tempArray.compactMap({ Int($0) })
+      //  print(inTtempArray)
         
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -56,11 +68,15 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath) as! MyCell
         let title = self.dateArray[indexPath.row]
-        let cell = UITableViewCell()
-        cell.textLabel?.text = title
-        //cell.textLabel?.backgroundColor = UIColor.clear
+        let temp = self.tempArray[indexPath.row]
+        //let cell = UITableViewCell()
+        //cell.textLabel?.text = title
+        cell.labelDate?.text = title
+        cell.labelTemp?.text = "\(temp)"
+        cell.hourImage.image = UIImage(named: "Humidity")
+
         cell.backgroundColor = UIColor.clear
         return cell
     }
@@ -68,7 +84,6 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.dateArray.count
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let vc3 = segue.destination as? SecondScreenViewController
