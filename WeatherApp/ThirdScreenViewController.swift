@@ -68,16 +68,22 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
         let state = self.stateArray[indexPath.row]
         
         switch state {
+        case "Thunderstorm":
+            cell.hourImage.image = UIImage(named: "Thunderstorm")
+        case "Rain":
+            cell.hourImage.image = UIImage(named: "Rain")
+        case "Snow":
+            cell.hourImage.image = UIImage(named: "Snow")
+        case "Mist":
+            cell.hourImage.image = UIImage(named: "Mist")
         case "Sunny":
             cell.hourImage.image = UIImage(named: "Sunny")
-        case "Rain":
-            cell.hourImage.image = UIImage(named: "Humidity")
         case "Clouds":
             cell.hourImage.image = UIImage(named: "Cloudy")
         case "Clear":
             cell.hourImage.image = UIImage(named: "Sunny")
         default:
-            cell.hourImage.image = UIImage(named: "Humidity")
+            cell.hourImage.image = UIImage(named: "Cloudy")
         }
     
         cell.labelDate?.text = title
