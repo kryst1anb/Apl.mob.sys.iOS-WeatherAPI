@@ -16,6 +16,7 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var BTN_Check: UIButton!
     @IBOutlet weak var BTN_Localization: UIButton!
 
+    let locationManager = CLLocationManager()
     var cityName = ""
     var flag = false
     var lat_local = ""
@@ -45,33 +46,54 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
            print("localization")
            flag = false
         
-        let locManager = CLLocationManager()
+        locationManager.requestAlwaysAuthorization()
+        
+        // If location services is enabled get the users location
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest // You can change the locaiton accuary here.
+            locationManager.startUpdatingLocation()
+        }
+        
+    }
+           func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+               if let location = locations.first {
+                let lat = "\((locationManager.location?.coordinate.latitude).unsafelyUnwrapped)"
+                let lon = "\((locationManager.location?.coordinate.longitude).unsafelyUnwrapped)"
 
-           locManager.delegate = self
-           locManager.desiredAccuracy = kCLLocationAccuracyBest
-           locManager.requestWhenInUseAuthorization()
-           locManager.startMonitoringSignificantLocationChanges()
-
-           // Check if the user allowed authorization
-           if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-               CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorized)
-           {
-            
-            let lat = "\((locManager.location?.coordinate.latitude).unsafelyUnwrapped)"
-            
-            let lon = "\((locManager.location?.coordinate.longitude).unsafelyUnwrapped)"
-
-            
-            self.lon_local = lon
+                self.lon_local = lon
                 self.lat_local = lat
-            
-                self.performSegue(withIdentifier: "SecondScreenView", sender: self)
 
-               } else {
-                   print("Location not authorized")
-                  
+                self.performSegue(withIdentifier: "SecondScreenView", sender: self)
                }
-   }
+           }
+           
+           // If deined access give the user the option to change it
+           func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+               if(status == CLAuthorizationStatus.denied) {
+                   showLocationDisabledPopUp()
+               }
+           }
+           
+           // Show the popup to the user if deined access
+           func showLocationDisabledPopUp() {
+               let alertController = UIAlertController(title: "Background Location Access Disabled",
+                                                       message: "To get current Weather we need your location",
+                                                       preferredStyle: .alert)
+               
+               let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+               alertController.addAction(cancelAction)
+               
+               let openAction = UIAlertAction(title: "Open Settings", style: .default) { (action) in
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                       UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                   }
+               }
+               alertController.addAction(openAction)
+               
+               self.present(alertController, animated: true, completion: nil)
+           }
+        
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as? SecondScreenViewController
