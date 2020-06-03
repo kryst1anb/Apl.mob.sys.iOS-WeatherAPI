@@ -12,6 +12,7 @@ class MyCell: UITableViewCell{
     
     @IBOutlet weak var labelDate: UILabel!
     @IBOutlet weak var labelTemp: UILabel!
+    @IBOutlet weak var labelDate2: UILabel!
     @IBOutlet weak var hourImage: UIImageView!
 }
 
@@ -63,6 +64,7 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath) as! MyCell
+        
         let title = self.dateArray[indexPath.row]
         let temp = self.tempArray[indexPath.row]
         let state = self.stateArray[indexPath.row]
@@ -86,7 +88,8 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
             cell.hourImage.image = UIImage(named: "Cloudy")
         }
     
-        cell.labelDate?.text = title
+        cell.isUserInteractionEnabled = false
+        cell.labelDate2?.text = title
         cell.labelTemp?.text = "\(temp)"
         
         cell.backgroundColor = UIColor.clear
