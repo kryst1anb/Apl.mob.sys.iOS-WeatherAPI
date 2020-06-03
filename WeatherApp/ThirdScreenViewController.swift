@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThirdScreenViewController: UIViewController{
+class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     @IBOutlet weak var toolbar2: UIToolbar!
     @IBOutlet weak var labelCityName: UILabel!
@@ -17,7 +17,9 @@ class ThirdScreenViewController: UIViewController{
     @IBOutlet weak var labelPressure: UILabel!
     @IBOutlet weak var labelHumidity: UILabel!
     @IBOutlet weak var labelWind: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     
+    @IBOutlet weak var tableView: UITableView!
     var cityName = ""
     var flag = false
     var url = ""
@@ -26,13 +28,21 @@ class ThirdScreenViewController: UIViewController{
     var temp = 0
     var desc = ""
     
+    var dateArray = [""]
+    
     var pressure = 0
     var humidity = 0
     var wind = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = UIColor.clear
         
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        tableView.tableFooterView = UIView()
+    
         labelCityName.text = cityName
         labelTemperature.text = "\(temp)"
         labelDescription.text = desc
@@ -44,6 +54,21 @@ class ThirdScreenViewController: UIViewController{
         labelWind.text = "\(wind)"
         
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath)
+        let title = self.dateArray[indexPath.row]
+        let cell = UITableViewCell()
+        cell.textLabel?.text = title
+        //cell.textLabel?.backgroundColor = UIColor.clear
+        cell.backgroundColor = UIColor.clear
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.dateArray.count
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let vc3 = segue.destination as? SecondScreenViewController

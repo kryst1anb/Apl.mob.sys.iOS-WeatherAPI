@@ -12,7 +12,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="SecondScreenViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="SecondScreenViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -345,15 +345,35 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="236" translatesAutoresizingMaskIntoConstraints="NO" id="5fL-8k-bdp">
                                 <rect key="frame" x="0.0" y="309" width="414" height="513"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tem-z5-S4X">
-                                        <rect key="frame" x="8" y="8" width="398" height="476"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tem-z5-S4X">
+                                        <rect key="frame" x="8" y="8" width="398" height="497"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WeatherListItem" textLabel="ttV-nz-Tyq" rowHeight="70" style="IBUITableViewCellStyleDefault" id="sJV-Sz-8ZP">
+                                                <rect key="frame" x="0.0" y="28" width="398" height="70"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sJV-Sz-8ZP" id="ISc-5F-wsT">
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="70"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ttV-nz-Tyq">
+                                                            <rect key="frame" x="20" y="0.0" width="358" height="70"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </tableViewCell>
+                                        </prototypes>
                                     </tableView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Tem-z5-S4X" firstAttribute="top" secondItem="xwd-UI-pwo" secondAttribute="top" constant="8" id="1n0-v8-oj3"/>
-                                    <constraint firstItem="xwd-UI-pwo" firstAttribute="bottom" secondItem="Tem-z5-S4X" secondAttribute="bottom" constant="29" id="GuU-fu-I6Z"/>
-                                    <constraint firstAttribute="bottom" secondItem="Tem-z5-S4X" secondAttribute="bottom" constant="29" id="pyG-YA-qVK"/>
+                                    <constraint firstItem="xwd-UI-pwo" firstAttribute="bottom" secondItem="Tem-z5-S4X" secondAttribute="bottom" constant="8" id="GuU-fu-I6Z"/>
+                                    <constraint firstAttribute="bottom" secondItem="Tem-z5-S4X" secondAttribute="bottom" constant="8" id="pyG-YA-qVK"/>
                                     <constraint firstItem="Tem-z5-S4X" firstAttribute="trailing" secondItem="5fL-8k-bdp" secondAttribute="trailingMargin" id="qRz-Uf-NBH"/>
                                     <constraint firstItem="Tem-z5-S4X" firstAttribute="centerX" secondItem="5fL-8k-bdp" secondAttribute="centerX" id="tCH-nT-kHX"/>
                                     <constraint firstItem="Tem-z5-S4X" firstAttribute="leading" secondItem="5fL-8k-bdp" secondAttribute="leadingMargin" id="vbL-AK-lmS"/>
@@ -406,6 +426,7 @@
                         <outlet property="labelPressure" destination="FZ9-xP-8t7" id="AgM-2q-eyF"/>
                         <outlet property="labelTemperature" destination="WKO-y8-Q2X" id="OOa-Mj-IKh"/>
                         <outlet property="labelWind" destination="2UC-Zx-imh" id="QTV-f0-tbz"/>
+                        <outlet property="tableView" destination="Tem-z5-S4X" id="XnL-th-9WL"/>
                         <outlet property="toolbar2" destination="AGc-mr-udi" id="1Io-8S-ax8"/>
                     </connections>
                 </viewController>

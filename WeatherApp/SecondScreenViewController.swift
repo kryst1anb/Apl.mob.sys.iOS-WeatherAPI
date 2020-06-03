@@ -26,6 +26,7 @@ class SecondScreenViewController: UIViewController {
     var finalLon = ""
     var finalTemp = 0
     var finalDesc = ""
+    var finalDateArray = [""]
     
     var finalPressure = 0
     var finalHumidity = 0
@@ -65,6 +66,7 @@ class SecondScreenViewController: UIViewController {
                             
                             let weatherWind = weatherDetails[0]["wind"] as? [String: Any],
                             let wind = weatherWind["speed"] as? Double,
+                            
                         
                             let weatherMain2 = weatherDetails[0]["weather"] as? [[String: Any]],
                             let desc = weatherMain2[0]["description"] as? String,
@@ -76,8 +78,19 @@ class SecondScreenViewController: UIViewController {
                             let country = weatherCity["country"] as? String
                             else {return}
                         
+                        for data in weatherDetails{
+                            
+                            let weatherData = data["dt_txt"] as? String
+                            var word = "\(weatherData.unsafelyUnwrapped)"
+                            word.removeLast(3)
+                            self.finalDateArray.append("\(word)")
+                            
+                        }
+
+                        self.finalDateArray.remove(at: 0)
+                        print(self.finalDateArray)
                             DispatchQueue.main.async{
-                                self.setWeather(weather: weather, description: desc, temp: Int(temp), name: name, country: country, pressure: Int(pressure), humidity: Int(humidity), wind: Int(wind))
+                                self.setWeather(weather: weather, description: desc, temp: Int(temp), name: name, country: country, pressure: Int(pressure), humidity: Int(humidity), wind: Int(wind), date: self.finalDateArray)
                             }
                     }
                     catch{
@@ -87,7 +100,7 @@ class SecondScreenViewController: UIViewController {
             }
             task.resume()
         }
-    func setWeather(weather: String?,description: String?, temp: Int, name: String?, country: String?, pressure: Int, humidity: Int, wind: Int){
+    func setWeather(weather: String?,description: String?, temp: Int, name: String?, country: String?, pressure: Int, humidity: Int, wind: Int, date: [String]){
             descriptionWeather.text = description ?? "---"
             finalDesc = description ?? ""
             tempWeather.text = "\(temp)"
@@ -99,6 +112,9 @@ class SecondScreenViewController: UIViewController {
             finalPressure = pressure
             finalHumidity = humidity
             finalWind = wind
+            finalDateArray = date
+       //print("Date:", date)
+
         
         
             switch weather {
@@ -124,6 +140,7 @@ class SecondScreenViewController: UIViewController {
         vc2?.pressure = self.finalPressure
         vc2?.humidity = self.finalHumidity
         vc2?.wind = self.finalWind
+        vc2?.dateArray = self.finalDateArray
     }
 }
 
