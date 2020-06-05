@@ -1,6 +1,7 @@
 import UIKit
 import CoreLocation
 import Foundation
+import Network
 
 class HomeViewController: UIViewController, CLLocationManagerDelegate {
 
@@ -20,7 +21,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     var errorCode = ""
     
     override func viewDidLoad() {
+        
+        
+        
         super.viewDidLoad()
+        
+               
         // Setting view of button check city
         BTN_Check.setTitleColor(UIColor(named: "ColorTextLD"), for: .normal)
         BTN_Check.tintColor = UIColor(named: "ColorTextLD")
@@ -30,10 +36,31 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         BTN_Localization.setTitleColor(UIColor(named: "ColorTextLD"), for: .normal)
         BTN_Localization.tintColor = UIColor(named: "ColorTextLD")
         
+        self.checkInternetConnection()
+    }
     
+    func checkInternetConnection(){
+        
+        let monitor=NWPathMonitor()
+               
+        monitor.pathUpdateHandler = { path in
+            if path.status != .satisfied{
+                       
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Error", message: "No internet connection", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+            
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+
     }
     
     @IBAction func SearchButton(_ sender: AnyObject) {
+
         let ifNumbers = INPUT_City.text?.rangeOfCharacter(from: .decimalDigits)
 
         print("Pressed button Check")
@@ -54,6 +81,9 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     }
        
     @IBAction func LocalizationButton(_ sender: Any) {
+        
+        
+        
         print("Pressed button Localization")
         
         flag_BTN_Check_click = false
