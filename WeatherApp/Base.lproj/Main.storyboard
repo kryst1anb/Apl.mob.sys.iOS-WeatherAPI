@@ -12,7 +12,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="SecondScreenViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="SecondScreenViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -454,7 +454,7 @@
                                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WeatherListItem" id="biZ-Mn-prD" customClass="MyCell" customModule="WeatherApp" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WeatherListItem" id="biZ-Mn-prD" customClass="hourlyCell" customModule="WeatherApp" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="355" height="70"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="biZ-Mn-prD" id="kuW-Xa-WP1">
@@ -501,9 +501,9 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
-                                                    <outlet property="hourImage" destination="sLW-o1-VBF" id="e3D-bd-gBE"/>
-                                                    <outlet property="labelDate2" destination="ZQK-v6-uJ6" id="eK2-XR-rU5"/>
-                                                    <outlet property="labelTemp" destination="D6u-NB-TLW" id="5I5-MT-Ql4"/>
+                                                    <outlet property="ICON_weather" destination="sLW-o1-VBF" id="9p8-3X-jZE"/>
+                                                    <outlet property="LABEL_date" destination="ZQK-v6-uJ6" id="5bZ-qL-EBe"/>
+                                                    <outlet property="LABEL_temp" destination="D6u-NB-TLW" id="sbX-F1-BU6"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -542,14 +542,14 @@
                     </view>
                     <navigationItem key="navigationItem" id="EJx-ar-eaX"/>
                     <connections>
-                        <outlet property="labelCityName" destination="PZb-ct-evN" id="aeQ-KD-IYe"/>
-                        <outlet property="labelDescription" destination="bpj-GA-d4Q" id="A1W-kM-hy4"/>
-                        <outlet property="labelHumidity" destination="v1I-EF-DFg" id="7Y1-hW-Tle"/>
-                        <outlet property="labelPressure" destination="FZ9-xP-8t7" id="AgM-2q-eyF"/>
-                        <outlet property="labelTemperature" destination="WKO-y8-Q2X" id="OOa-Mj-IKh"/>
-                        <outlet property="labelWind" destination="2UC-Zx-imh" id="QTV-f0-tbz"/>
+                        <outlet property="LABEL_cityName" destination="PZb-ct-evN" id="zyU-Ht-dX2"/>
+                        <outlet property="LABEL_description" destination="bpj-GA-d4Q" id="Y3q-Do-rmw"/>
+                        <outlet property="LABEL_humidity" destination="v1I-EF-DFg" id="mPd-3q-5wL"/>
+                        <outlet property="LABEL_pressure" destination="FZ9-xP-8t7" id="MJ4-4P-krc"/>
+                        <outlet property="LABEL_temperature" destination="WKO-y8-Q2X" id="987-cH-0E8"/>
+                        <outlet property="LABEL_wind" destination="2UC-Zx-imh" id="xzr-M6-HXF"/>
+                        <outlet property="TOOLBAR_toolbarThirdView" destination="AGc-mr-udi" id="ipD-NA-O90"/>
                         <outlet property="tableView" destination="DeO-Nm-9pW" id="87N-D0-v1P"/>
-                        <outlet property="toolbar2" destination="AGc-mr-udi" id="1Io-8S-ax8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3jJ-1m-efV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -563,7 +563,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="C38-C4-Li9"/>
         <segue reference="thE-tU-iba"/>
         <segue reference="iaT-KE-SNT"/>
     </inferredMetricsTieBreakers>

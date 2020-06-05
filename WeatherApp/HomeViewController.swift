@@ -67,7 +67,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
                
         if (INPUT_City.text!.count > 0 && ifNumbers == nil){
             flag_BTN_Check_click = true
-            self.local_cityName = INPUT_City.text!
+            var cityNameString = INPUT_City.text!
+            
+            let data = cityNameString.data(using: .utf8)!
+            cityNameString = String(decoding : data, as: UTF8.self)
+            
+            self.local_cityName = cityNameString
             self.performSegue(withIdentifier: "SecondScreenView", sender: self)
         }else{
             let alertController = UIAlertController(title: "Error",

@@ -8,40 +8,41 @@
 
 import UIKit
 
-class MyCell: UITableViewCell{
+class hourlyCell: UITableViewCell{
     
-    //@IBOutlet weak var labelDate: UILabel!
-    @IBOutlet weak var labelTemp: UILabel!
-    @IBOutlet weak var labelDate2: UILabel!
-    @IBOutlet weak var hourImage: UIImageView!
+    //@IBOutlet weak var labelTemp: UILabel!
+    //@IBOutlet weak var labelDate2: UILabel!
+    //@IBOutlet weak var hourImage: UIImageView!
+    
+    @IBOutlet weak var LABEL_temp: UILabel!
+    @IBOutlet weak var ICON_weather: UIImageView!
+    @IBOutlet weak var LABEL_date: UILabel!
 }
 
 class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
-    @IBOutlet weak var toolbar2: UIToolbar!
-    @IBOutlet weak var labelCityName: UILabel!
-    @IBOutlet weak var labelTemperature: UILabel!
-    @IBOutlet weak var labelDescription: UILabel!
-    @IBOutlet weak var labelPressure: UILabel!
-    @IBOutlet weak var labelHumidity: UILabel!
-    @IBOutlet weak var labelWind: UILabel!
-    
+    @IBOutlet weak var TOOLBAR_toolbarThirdView: UIToolbar!
+    @IBOutlet weak var LABEL_cityName: UILabel!
+    @IBOutlet weak var LABEL_temperature: UILabel!
+    @IBOutlet weak var LABEL_description: UILabel!
+    @IBOutlet weak var LABEL_pressure: UILabel!
+    @IBOutlet weak var LABEL_humidity: UILabel!
+    @IBOutlet weak var LABEL_wind: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    var cityName = ""
-    var flag = false
-    var url = ""
-    var lat = ""
-    var lon = ""
-    var temp = 0
-    var desc = ""
     
-    var dateArray = [""]
-    var tempArray = [""]
-    var stateArray = [""]
-    
-    var pressure = 0
-    var humidity = 0
-    var wind = 0
+    var pass_cityName = ""
+    var pass_BTN_Check_click = false
+    var pass_url = ""
+    var pass_latitude = ""
+    var pass_longitude = ""
+    var pass_temp = 0
+    var pass_desc = ""
+    var pass_pressure = 0
+    var pass_humidity = 0
+    var pass_wind = 0
+    var pass_dateArray = [""]
+    var pass_tempArray = [""]
+    var pass_stateArray = [""]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,64 +52,64 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
         self.tableView.delegate = self
         tableView.tableFooterView = UIView()
     
-        labelCityName.text = cityName
-        labelTemperature.text = "\(temp)"
-        labelDescription.text = desc
-        toolbar2.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
-        toolbar2.setShadowImage(UIImage(), forToolbarPosition: .any)
+        LABEL_cityName.text = pass_cityName
+        LABEL_temperature.text = "\(pass_temp)"
+        LABEL_description.text = pass_desc
+        TOOLBAR_toolbarThirdView.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
+        TOOLBAR_toolbarThirdView.setShadowImage(UIImage(), forToolbarPosition: .any)
         
-        labelPressure.text = "\(pressure)"
-        labelHumidity.text = "\(humidity)"
-        labelWind.text = "\(wind)"
+        LABEL_pressure.text = "\(pass_pressure)"
+        LABEL_humidity.text = "\(pass_humidity)"
+        LABEL_wind.text = "\(pass_wind)"
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath) as! MyCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherListItem", for: indexPath) as! hourlyCell
         
-        let title = self.dateArray[indexPath.row]
-        let temp = self.tempArray[indexPath.row]
-        let state = self.stateArray[indexPath.row]
+        let dateCell = self.pass_dateArray[indexPath.row]
+        let tempCell = self.pass_tempArray[indexPath.row]
+        let weatherCell = self.pass_stateArray[indexPath.row]
         
-        switch state {
+        switch weatherCell {
         case "Thunderstorm":
-            cell.hourImage.image = UIImage(named: "Thunderstorm")
+            cell.ICON_weather.image = UIImage(named: "Thunderstorm")
         case "Rain":
-            cell.hourImage.image = UIImage(named: "Rain")
+            cell.ICON_weather.image = UIImage(named: "Rain")
         case "Snow":
-            cell.hourImage.image = UIImage(named: "Snow")
+            cell.ICON_weather.image = UIImage(named: "Snow")
         case "Mist":
-            cell.hourImage.image = UIImage(named: "Mist")
+            cell.ICON_weather.image = UIImage(named: "Mist")
         case "Sunny":
-            cell.hourImage.image = UIImage(named: "Sunny")
+            cell.ICON_weather.image = UIImage(named: "Sunny")
         case "Clouds":
-            cell.hourImage.image = UIImage(named: "Cloudy")
+            cell.ICON_weather.image = UIImage(named: "Cloudy")
         case "Clear":
-            cell.hourImage.image = UIImage(named: "Sunny")
+            cell.ICON_weather.image = UIImage(named: "Sunny")
         default:
-            cell.hourImage.image = UIImage(named: "Cloudy")
+            cell.ICON_weather.image = UIImage(named: "Cloudy")
         }
     
         cell.isUserInteractionEnabled = false
-        cell.labelDate2?.text = title
-        cell.labelTemp?.text = "\(temp)"
+        cell.LABEL_date?.text = dateCell
+        cell.LABEL_temp?.text = "\(tempCell)"
         
         cell.backgroundColor = UIColor.clear
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dateArray.count
+        return self.pass_dateArray.count
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let vc3 = segue.destination as? SecondScreenViewController
         
-        vc3?.pass_cityName = self.cityName
-        vc3?.pass_BTN_Check_click = self.flag
-        vc3?.local_url = self.url
-        vc3?.pass_latitude = self.lat
-        vc3?.pass_longitude = self.lon
-        vc3?.local_temp = self.temp
-        vc3?.local_desc = self.desc
+        vc3?.pass_cityName = self.pass_cityName
+        vc3?.pass_BTN_Check_click = self.pass_BTN_Check_click
+        vc3?.local_url = self.pass_url
+        vc3?.pass_latitude = self.pass_latitude
+        vc3?.pass_longitude = self.pass_longitude
+        vc3?.local_temp = self.pass_temp
+        vc3?.local_desc = self.pass_desc
     }
 }

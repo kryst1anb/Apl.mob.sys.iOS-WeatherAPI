@@ -46,10 +46,16 @@ class SecondScreenViewController: UIViewController {
         TOOLBAR_toolbarSecondView.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
         TOOLBAR_toolbarSecondView.setShadowImage(UIImage(), forToolbarPosition: .any)
         
+//        let data = pass_cityName.data(using: .utf8)!
+//
+//        pass_cityName = String(decoding : data, as: UTF8.self)
+    
         pass_cityName = pass_cityName.replacingOccurrences(of: " ", with: "+")
+        print(pass_cityName)
         
         if pass_BTN_Check_click == true{
             local_url = "https://api.openweathermap.org/data/2.5/forecast?q=\(pass_cityName)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
+            print(local_url)
         }
         else{
             local_url = "https://api.openweathermap.org/data/2.5/forecast?lat=\(pass_latitude)&lon=\(pass_longitude)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
@@ -77,6 +83,7 @@ class SecondScreenViewController: UIViewController {
                         
                         //Individuals days (after 3 hours weather)
                         guard let jsonList = json["list"] as? [[String: Any]],
+                            
                             let jsonMain = jsonList[0]["main"] as? [String: Any],
                             let jsonMainTemp = jsonMain["temp"] as? Double,
                             
@@ -92,7 +99,8 @@ class SecondScreenViewController: UIViewController {
                         else{return}
                             
                         guard let jsonCity = json["city"] as? [String: Any],
-                            let jsonCityName = jsonCity["name"] as? String,
+                            var jsonCityName = jsonCity["name"] as? String,
+                                                        
                             let jsonCityCountry = jsonCity["country"] as? String
                         else {return}
                         
@@ -122,10 +130,14 @@ class SecondScreenViewController: UIViewController {
                             self.local_dateArray.append("\(jsonDataTimeUnwrapped)")
                             
                         }
-
+print(jsonList)
                         self.local_dateArray.remove(at: 0)
                         self.local_tempArray.remove(at: 0)
                         self.local_weatherState.remove(at: 0)
+                        
+                        let data = jsonCityName.data(using: .utf8)!
+                        jsonCityName = String(decoding : data, as: UTF8.self)
+                        print(jsonCityName)
                         
                             DispatchQueue.main.async{
                                 self.setWeather(weather: jsonWeatherMain, description: jsonWeatherDescription, temp: Int(jsonMainTemp), name: jsonCityName, country: jsonCityCountry, pressure: Int(jsonMainPressure), humidity: Int(jsonMainHumidity), wind: Int(jsonWindSpeed), date: self.local_dateArray, tempArray: self.local_tempArray, weatherState: self.local_weatherState)
@@ -150,7 +162,11 @@ class SecondScreenViewController: UIViewController {
             LABEL_tempWeather.text = "\(temp)"
             local_temp = temp
         
-            LABEL_cityName.text = "\(name.unsafelyUnwrapped)"
+            let data = name.unsafelyUnwrapped.data(using: .utf8)!
+            let nameUtf8 = String(decoding : data, as: UTF8.self)
+            print(nameUtf8)
+        
+            LABEL_cityName.text = "\(nameUtf8)"
             pass_cityName = "\(name.unsafelyUnwrapped)"
         
             LABEL_countryName.text = "\(country.unsafelyUnwrapped)"
@@ -186,19 +202,19 @@ class SecondScreenViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let vc2 = segue.destination as? ThirdScreenViewController
         
-        vc2?.cityName = self.pass_cityName
-        vc2?.flag = self.pass_BTN_Check_click
-        vc2?.url = self.local_url
-        vc2?.lat = self.pass_latitude
-        vc2?.lon = self.pass_longitude
-        vc2?.temp = self.local_temp
-        vc2?.desc = self.local_desc
-        vc2?.pressure = self.local_pressure
-        vc2?.humidity = self.local_humidity
-        vc2?.wind = self.local_windSpeed
-        vc2?.dateArray = self.local_dateArray
-        vc2?.tempArray = self.local_tempArray
-        vc2?.stateArray = self.local_weatherState
+        vc2?.pass_cityName = self.pass_cityName
+        vc2?.pass_BTN_Check_click = self.pass_BTN_Check_click
+        vc2?.pass_url = self.local_url
+        vc2?.pass_latitude = self.pass_latitude
+        vc2?.pass_longitude = self.pass_longitude
+        vc2?.pass_temp = self.local_temp
+        vc2?.pass_desc = self.local_desc
+        vc2?.pass_pressure = self.local_pressure
+        vc2?.pass_humidity = self.local_humidity
+        vc2?.pass_wind = self.local_windSpeed
+        vc2?.pass_dateArray = self.local_dateArray
+        vc2?.pass_tempArray = self.local_tempArray
+        vc2?.pass_stateArray = self.local_weatherState
     }
 }
 
