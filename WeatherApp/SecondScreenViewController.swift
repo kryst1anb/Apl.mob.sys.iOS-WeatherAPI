@@ -1,115 +1,134 @@
-//
-//  SecondScreenViewController.swift
-//  WeatherApp
-//
-//  Created by Klaudia Lewandowska on 01/06/2020.
-//  Copyright © 2020 Klaudia Lewandowska. All rights reserved.
-//
-
 import UIKit
 
 class SecondScreenViewController: UIViewController {
     
-    @IBOutlet weak var cityName: UILabel!
-    @IBOutlet weak var countryName: UILabel!
-    @IBOutlet weak var tempWeather: UILabel!
-    @IBOutlet weak var weatherIcon: UIImageView!
-    @IBOutlet weak var descriptionWeather: UILabel!
-    @IBOutlet weak var toolbar1: UIToolbar!
+    //@IBOutlet weak var cityName: UILabel!
+    @IBOutlet weak var LABEL_cityName: UILabel!
     
-    var finalCityName = ""
-    var finalflag = false
-    var finalUrl = ""
-    var finalLat = ""
-    var finalLon = ""
-    var finalTemp = 0
-    var finalDesc = ""
-    var finalDateArray = [""]
-    var finalTepArray = [""]
-    var finalWeatherState = [""]
+    //@IBOutlet weak var countryName: UILabel!
+    @IBOutlet weak var LABEL_countryName: UILabel!
     
-    var finalPressure = 0
-    var finalHumidity = 0
-    var finalWind = 0
+    //@IBOutlet weak var tempWeather: UILabel!
+    @IBOutlet weak var LABEL_tempWeather: UILabel!
     
+    //@IBOutlet weak var weatherIcon: UIImageView!
+    @IBOutlet weak var ICON_weather: UIImageView!
+    
+    //@IBOutlet weak var descriptionWeather: UILabel!
+    @IBOutlet weak var LABEL_descriptionWeather: UILabel!
+    
+    //@IBOutlet weak var toolbar1: UIToolbar!
+    @IBOutlet weak var TOOLBAR_toolbarSecondView: UIToolbar!
+    @IBOutlet weak var LABEL_celsius: UILabel!
+    
+    
+    var pass_cityName = ""
+    var pass_BTN_Check_click = false
+    var pass_latitude = ""
+    var pass_longitude = ""
+    
+    var local_url = ""
+    var local_temp = 0
+    var local_desc = ""
+    var local_dateArray = [""]
+    var local_tempArray = [""]
+    var local_weatherState = [""]
+    var local_pressure = 0
+    var local_humidity = 0
+    var local_windSpeed = 0
+    
+    func goToHomeView (){
+        self.performSegue(withIdentifier: "goToHomeView", sender: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        toolbar1.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
-        toolbar1.setShadowImage(UIImage(), forToolbarPosition: .any)
+        TOOLBAR_toolbarSecondView.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
+        TOOLBAR_toolbarSecondView.setShadowImage(UIImage(), forToolbarPosition: .any)
         
-       finalCityName = finalCityName.replacingOccurrences(of: " ", with: "+")
+        pass_cityName = pass_cityName.replacingOccurrences(of: " ", with: "+")
         
-        if finalflag == true{
-            finalUrl = "https://api.openweathermap.org/data/2.5/forecast?q=\(finalCityName)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
+        if pass_BTN_Check_click == true{
+            local_url = "https://api.openweathermap.org/data/2.5/forecast?q=\(pass_cityName)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
         }
         else{
-            finalUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=\(finalLat)&lon=\(finalLon)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
+            local_url = "https://api.openweathermap.org/data/2.5/forecast?lat=\(pass_latitude)&lon=\(pass_longitude)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
         }
         
-        guard let url = URL(string: "\(finalUrl)") else {return}
+        guard let url = URL(string: "\(local_url)") else {return}
             let task = URLSession.shared.dataTask(with: url){(data, response, error) in
                 if let data = data, error == nil{
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if httpResponse.statusCode != 200{
+                            DispatchQueue.main.async {
+                                let alertController = UIAlertController(title: "Error",
+                                                                        message: "Not found city \(self.pass_cityName)",
+                                                                           preferredStyle: .alert)
+
+                                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in self.goToHomeView() }))
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                        }
+                        
+                    }
                     do{
                         guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
                             else {return}
                         
                         //Individuals days (after 3 hours weather)
-                        guard let weatherDetails = json["list"] as? [[String: Any]],
-                            let weatherMain = weatherDetails[0]["main"] as? [String: Any],
-                            let temp = weatherMain["temp"] as? Double,
+                        guard let jsonList = json["list"] as? [[String: Any]],
+                            let jsonMain = jsonList[0]["main"] as? [String: Any],
+                            let jsonMainTemp = jsonMain["temp"] as? Double,
                             
-                            let pressure = weatherMain["pressure"] as? Double,
-                            let humidity = weatherMain["humidity"] as? Double,
+                            let jsonMainPressure = jsonMain["pressure"] as? Double,
+                            let jsonMainHumidity = jsonMain["humidity"] as? Double,
                             
-                            let weatherWind = weatherDetails[0]["wind"] as? [String: Any],
-                            let wind = weatherWind["speed"] as? Double,
+                            let jsonWind = jsonList[0]["wind"] as? [String: Any],
+                            let jsonWindSpeed = jsonWind["speed"] as? Double,
                         
-                            let weatherMain2 = weatherDetails[0]["weather"] as? [[String: Any]],
-                            let desc = weatherMain2[0]["description"] as? String,
-                            let weather = weatherMain2[0]["main"] as? String
-                            else{return}
+                            let jsonWeather = jsonList[0]["weather"] as? [[String: Any]],
+                            let jsonWeatherDescription = jsonWeather[0]["description"] as? String,
+                            let jsonWeatherMain = jsonWeather[0]["main"] as? String
+                        else{return}
                             
-                         guard let weatherCity = json["city"] as? [String: Any],
-                            let name = weatherCity["name"] as? String,
-                            let country = weatherCity["country"] as? String
-                            else {return}
+                        guard let jsonCity = json["city"] as? [String: Any],
+                            let jsonCityName = jsonCity["name"] as? String,
+                            let jsonCityCountry = jsonCity["country"] as? String
+                        else {return}
                         
                         
-                        for data in weatherDetails{
+                        for data in jsonList{
                             
-                            let weatherData = data["dt_txt"] as? String
+                            let jsonDataTime = data["dt_txt"] as? String
                             
-                            
-                            if let weatherWeather = data["weather"] as? [[String: Any]]{
-                                let weatherState = weatherWeather[0]["main"] as? String
-                                let weatherState2 = weatherState.unsafelyUnwrapped
-                                self.finalWeatherState.append("\(weatherState2)")
+                            if let jsonDataWeather = data["weather"] as? [[String: Any]]{
+                                let jsonDataWeatherMain = jsonDataWeather[0]["main"] as? String
+                                self.local_weatherState.append("\(jsonDataWeatherMain.unsafelyUnwrapped)")
                             }
                             else{return}
                             
-                            if let weatherTemper = data["main"] as? [String: Any]{
+                            if let jsonDataMain = data["main"] as? [String: Any]{
                             
-                                let weatherTemper2 = weatherTemper["temp"] as? Double
-                                let temperat = "\(weatherTemper2.unsafelyUnwrapped)"
-                                let temperat2 = temperat.components(separatedBy: ["."])
+                                let jsonDataMainTemp = jsonDataMain["temp"] as? Double
+                                let jsonDataMainTempUnwrapped = "\(jsonDataMainTemp.unsafelyUnwrapped)"
+                                let jsonDataMainTempValue = jsonDataMainTempUnwrapped.components(separatedBy: ["."])
                                 
-                                self.finalTepArray.append("\(temperat2[0]) °C")
+                                self.local_tempArray.append("\(jsonDataMainTempValue[0]) °C")
                             }
                             else{return}
                                 
-                            var word = "\(weatherData.unsafelyUnwrapped)"
-                            word.removeLast(3)
-                            self.finalDateArray.append("\(word)")
+                            var jsonDataTimeUnwrapped = "\(jsonDataTime.unsafelyUnwrapped)"
+                            jsonDataTimeUnwrapped.removeLast(3)
+                            self.local_dateArray.append("\(jsonDataTimeUnwrapped)")
                             
                         }
 
-                        self.finalDateArray.remove(at: 0)
-                        self.finalTepArray.remove(at: 0)
-                        self.finalWeatherState.remove(at: 0)
+                        self.local_dateArray.remove(at: 0)
+                        self.local_tempArray.remove(at: 0)
+                        self.local_weatherState.remove(at: 0)
                         
                             DispatchQueue.main.async{
-                                self.setWeather(weather: weather, description: desc, temp: Int(temp), name: name, country: country, pressure: Int(pressure), humidity: Int(humidity), wind: Int(wind), date: self.finalDateArray, tempArray: self.finalTepArray, weatherState: self.finalWeatherState)
+                                self.setWeather(weather: jsonWeatherMain, description: jsonWeatherDescription, temp: Int(jsonMainTemp), name: jsonCityName, country: jsonCityCountry, pressure: Int(jsonMainPressure), humidity: Int(jsonMainHumidity), wind: Int(jsonWindSpeed), date: self.local_dateArray, tempArray: self.local_tempArray, weatherState: self.local_weatherState)
                             }
                     }
                     catch{
@@ -119,49 +138,67 @@ class SecondScreenViewController: UIViewController {
             }
             task.resume()
         }
-    func setWeather(weather: String?,description: String?, temp: Int, name: String?, country: String?, pressure: Int, humidity: Int, wind: Int, date: [String], tempArray: [String], weatherState: [String])
+    func setWeather(weather: String?, description: String?, temp: Int, name: String?, country: String?, pressure: Int, humidity: Int, wind: Int, date: [String], tempArray: [String], weatherState: [String])
     {
-            descriptionWeather.text = description ?? "---"
-            finalDesc = description ?? ""
-            tempWeather.text = "\(temp)"
-            finalTemp = temp
-            cityName.text = "\(name.unsafelyUnwrapped)"
-            finalCityName = "\(name.unsafelyUnwrapped)"
-            countryName.text = "\(country.unsafelyUnwrapped)"
         
-            finalPressure = pressure
-            finalHumidity = humidity
-            finalWind = wind
-            finalDateArray = date
-            finalTepArray = tempArray
-            finalWeatherState = weatherState
+            ICON_weather.isHidden = false
+            LABEL_celsius.isHidden = false
+        
+            LABEL_descriptionWeather.text = description ?? ""
+            local_desc = description ?? ""
+        
+            LABEL_tempWeather.text = "\(temp)"
+            local_temp = temp
+        
+            LABEL_cityName.text = "\(name.unsafelyUnwrapped)"
+            pass_cityName = "\(name.unsafelyUnwrapped)"
+        
+            LABEL_countryName.text = "\(country.unsafelyUnwrapped)"
+        
+            local_pressure = pressure
+            local_humidity = humidity
+            local_windSpeed = wind
+            local_dateArray = date
+            local_tempArray = tempArray
+            local_weatherState = weatherState
 
             switch weather {
-            case "Sunny":
-                weatherIcon.image = UIImage(named: "Sunny")
+            case "Thunderstorm":
+                ICON_weather.image  = UIImage(named: "Thunderstorm")
             case "Rain":
-                weatherIcon.image = UIImage(named: "Rainy")
+                ICON_weather.image  = UIImage(named: "Rain")
+            case "Snow":
+                ICON_weather.image  = UIImage(named: "Snow")
+            case "Mist":
+                ICON_weather.image  = UIImage(named: "Mist")
+            case "Sunny":
+                ICON_weather.image  = UIImage(named: "Sunny")
+            case "Clouds":
+                ICON_weather.image  = UIImage(named: "Cloudy")
+            case "Clear":
+                ICON_weather.image = UIImage(named: "Sunny")
             default:
-                weatherIcon.image = UIImage(named: "Cloudy")
-            
+                ICON_weather.image = UIImage(named: "Cloudy")
+                
             }
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let vc2 = segue.destination as? ThirdScreenViewController
         
-        vc2?.cityName = self.finalCityName
-        vc2?.flag = self.finalflag
-        vc2?.url = self.finalUrl
-        vc2?.lat = self.finalLat
-        vc2?.lon = self.finalLon
-        vc2?.temp = self.finalTemp
-        vc2?.desc = self.finalDesc
-        vc2?.pressure = self.finalPressure
-        vc2?.humidity = self.finalHumidity
-        vc2?.wind = self.finalWind
-        vc2?.dateArray = self.finalDateArray
-        vc2?.tempArray = self.finalTepArray
-        vc2?.stateArray = self.finalWeatherState
+        vc2?.cityName = self.pass_cityName
+        vc2?.flag = self.pass_BTN_Check_click
+        vc2?.url = self.local_url
+        vc2?.lat = self.pass_latitude
+        vc2?.lon = self.pass_longitude
+        vc2?.temp = self.local_temp
+        vc2?.desc = self.local_desc
+        vc2?.pressure = self.local_pressure
+        vc2?.humidity = self.local_humidity
+        vc2?.wind = self.local_windSpeed
+        vc2?.dateArray = self.local_dateArray
+        vc2?.tempArray = self.local_tempArray
+        vc2?.stateArray = self.local_weatherState
     }
 }
 

@@ -10,7 +10,7 @@ import UIKit
 
 class MyCell: UITableViewCell{
     
-    @IBOutlet weak var labelDate: UILabel!
+    //@IBOutlet weak var labelDate: UILabel!
     @IBOutlet weak var labelTemp: UILabel!
     @IBOutlet weak var labelDate2: UILabel!
     @IBOutlet weak var hourImage: UIImageView!
@@ -103,12 +103,12 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     let vc3 = segue.destination as? SecondScreenViewController
         
-        vc3?.finalCityName = self.cityName
-        vc3?.finalflag = self.flag
-        vc3?.finalUrl = self.url
-        vc3?.finalLat = self.lat
-        vc3?.finalLon = self.lon
-        vc3?.finalTemp = self.temp
-        vc3?.finalDesc = self.desc
+        vc3?.pass_cityName = self.cityName
+        vc3?.pass_BTN_Check_click = self.flag
+        vc3?.local_url = self.url
+        vc3?.pass_latitude = self.lat
+        vc3?.pass_longitude = self.lon
+        vc3?.local_temp = self.temp
+        vc3?.local_desc = self.desc
     }
 }
