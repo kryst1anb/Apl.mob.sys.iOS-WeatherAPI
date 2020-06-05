@@ -22,17 +22,12 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         
-        
-        
         super.viewDidLoad()
         
-               
-        // Setting view of button check city
         BTN_Check.setTitleColor(UIColor(named: "ColorTextLD"), for: .normal)
         BTN_Check.tintColor = UIColor(named: "ColorTextLD")
         BTN_Check.layer.cornerRadius = 4
         
-        // Setting view of button Localization
         BTN_Localization.setTitleColor(UIColor(named: "ColorTextLD"), for: .normal)
         BTN_Localization.tintColor = UIColor(named: "ColorTextLD")
         
@@ -60,23 +55,33 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func SearchButton(_ sender: AnyObject) {
-
         let ifNumbers = INPUT_City.text?.rangeOfCharacter(from: .decimalDigits)
-
         print("Pressed button Check")
                
-        if (INPUT_City.text!.count > 0 && ifNumbers == nil){
-            flag_BTN_Check_click = true
-            var cityNameString = INPUT_City.text!
-            
-            let data = cityNameString.data(using: .utf8)!
-            cityNameString = String(decoding : data, as: UTF8.self)
-            
-            self.local_cityName = cityNameString
-            self.performSegue(withIdentifier: "SecondScreenView", sender: self)
+        if INPUT_City.text!.count > 0{
+            if ifNumbers == nil{
+                       flag_BTN_Check_click = true
+                       var cityNameString = INPUT_City.text!
+                       
+                       let data = cityNameString.data(using: .utf8)!
+                       cityNameString = String(decoding : data, as: UTF8.self)
+                       
+                       self.local_cityName = cityNameString
+                       self.performSegue(withIdentifier: "SecondScreenView", sender: self)
+            }
+            else
+            {
+                let alertController = UIAlertController(title: "Number detect",
+                                                        message: "City name filed can not contain a number!",
+                                                               preferredStyle: .alert)
+
+                let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
         }else{
-            let alertController = UIAlertController(title: "Error",
-                                                    message: "Uncorrect name",
+            let alertController = UIAlertController(title: "Empty field detect",
+                                                    message: "City name filed can not be empty!",
                                                            preferredStyle: .alert)
 
             let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)

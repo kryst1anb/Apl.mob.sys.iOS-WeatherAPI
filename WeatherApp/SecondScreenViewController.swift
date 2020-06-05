@@ -37,6 +37,8 @@ class SecondScreenViewController: UIViewController {
     var local_humidity = 0
     var local_windSpeed = 0
     
+    var local_cityNameWithoutPlus = ""
+    
     func goToHomeView (){
         self.performSegue(withIdentifier: "goToHomeView", sender: nil)
     }
@@ -46,36 +48,39 @@ class SecondScreenViewController: UIViewController {
         TOOLBAR_toolbarSecondView.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
         TOOLBAR_toolbarSecondView.setShadowImage(UIImage(), forToolbarPosition: .any)
         
-//        let data = pass_cityName.data(using: .utf8)!
-//
-//        pass_cityName = String(decoding : data, as: UTF8.self)
-    
+        local_cityNameWithoutPlus = self.pass_cityName
+        
+        let data = pass_cityName.data(using: .utf8)!
+        pass_cityName = String(decoding : data, as: UTF8.self)
+            
         pass_cityName = pass_cityName.replacingOccurrences(of: " ", with: "+")
-        print(pass_cityName)
+        pass_cityName = pass_cityName.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
         
         if pass_BTN_Check_click == true{
             local_url = "https://api.openweathermap.org/data/2.5/forecast?q=\(pass_cityName)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
-            print(local_url)
         }
         else{
             local_url = "https://api.openweathermap.org/data/2.5/forecast?lat=\(pass_latitude)&lon=\(pass_longitude)&units=metric&appid=b314601205f4c241d94fa31f7c339a88"
         }
         
-        guard let url = URL(string: "\(local_url)") else {return}
+        
+        if let url = URL(string: "\(local_url)")
+        {
+        print("url2", url)
             let task = URLSession.shared.dataTask(with: url){(data, response, error) in
                 if let data = data, error == nil{
                     if let httpResponse = response as? HTTPURLResponse {
                         if httpResponse.statusCode != 200{
                             DispatchQueue.main.async {
-                                let alertController = UIAlertController(title: "Error",
-                                                                        message: "Not found city \(self.pass_cityName)",
+                                let errorMessage: String = HTTPURLResponse.localizedString(forStatusCode: httpResponse.statusCode)
+                                let alertController = UIAlertController(title: "Error - \(httpResponse.statusCode)",
+                                    message: "Not found city \(self.local_cityNameWithoutPlus). \(errorMessage.uppercased())",
                                                                            preferredStyle: .alert)
 
                                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in self.goToHomeView() }))
                                 self.present(alertController, animated: true, completion: nil)
                             }
                         }
-                        
                     }
                     do{
                         guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
@@ -147,8 +152,13 @@ print(jsonList)
                         print("Error with data...")
                     }
                 }
+            
             }
             task.resume()
+        }
+        else{
+            print("dupxo wielkie")
+        }
         }
     func setWeather(weather: String?, description: String?, temp: Int, name: String?, country: String?, pressure: Int, humidity: Int, wind: Int, date: [String], tempArray: [String], weatherState: [String])
     {
