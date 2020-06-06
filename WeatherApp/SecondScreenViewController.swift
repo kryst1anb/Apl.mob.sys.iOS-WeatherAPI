@@ -45,6 +45,10 @@ class SecondScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        LABEL_cityName.adjustsFontSizeToFitWidth = true
+        LABEL_cityName.sizeToFit()
+        
         TOOLBAR_toolbarSecondView.setBackgroundImage(UIImage(),forToolbarPosition: .any, barMetrics: .default)
         TOOLBAR_toolbarSecondView.setShadowImage(UIImage(), forToolbarPosition: .any)
         
@@ -64,9 +68,7 @@ class SecondScreenViewController: UIViewController {
         }
         
         
-        if let url = URL(string: "\(local_url)")
-        {
-        print("url2", url)
+        guard let url = URL(string: "\(local_url)") else {return}
             let task = URLSession.shared.dataTask(with: url){(data, response, error) in
                 if let data = data, error == nil{
                     if let httpResponse = response as? HTTPURLResponse {
@@ -105,7 +107,6 @@ class SecondScreenViewController: UIViewController {
                             
                         guard let jsonCity = json["city"] as? [String: Any],
                             var jsonCityName = jsonCity["name"] as? String,
-                                                        
                             let jsonCityCountry = jsonCity["country"] as? String
                         else {return}
                         
@@ -113,7 +114,6 @@ class SecondScreenViewController: UIViewController {
                         for data in jsonList{
                             
                             let jsonDataTime = data["dt_txt"] as? String
-                            
                             if let jsonDataWeather = data["weather"] as? [[String: Any]]{
                                 let jsonDataWeatherMain = jsonDataWeather[0]["main"] as? String
                                 self.local_weatherState.append("\(jsonDataWeatherMain.unsafelyUnwrapped)")
@@ -135,14 +135,13 @@ class SecondScreenViewController: UIViewController {
                             self.local_dateArray.append("\(jsonDataTimeUnwrapped)")
                             
                         }
-print(jsonList)
+
                         self.local_dateArray.remove(at: 0)
                         self.local_tempArray.remove(at: 0)
                         self.local_weatherState.remove(at: 0)
                         
                         let data = jsonCityName.data(using: .utf8)!
                         jsonCityName = String(decoding : data, as: UTF8.self)
-                        print(jsonCityName)
                         
                             DispatchQueue.main.async{
                                 self.setWeather(weather: jsonWeatherMain, description: jsonWeatherDescription, temp: Int(jsonMainTemp), name: jsonCityName, country: jsonCityCountry, pressure: Int(jsonMainPressure), humidity: Int(jsonMainHumidity), wind: Int(jsonWindSpeed), date: self.local_dateArray, tempArray: self.local_tempArray, weatherState: self.local_weatherState)
@@ -155,10 +154,6 @@ print(jsonList)
             
             }
             task.resume()
-        }
-        else{
-            print("dupxo wielkie")
-        }
         }
     func setWeather(weather: String?, description: String?, temp: Int, name: String?, country: String?, pressure: Int, humidity: Int, wind: Int, date: [String], tempArray: [String], weatherState: [String])
     {
@@ -174,7 +169,6 @@ print(jsonList)
         
             let data = name.unsafelyUnwrapped.data(using: .utf8)!
             let nameUtf8 = String(decoding : data, as: UTF8.self)
-            print(nameUtf8)
         
             LABEL_cityName.text = "\(nameUtf8)"
             pass_cityName = "\(name.unsafelyUnwrapped)"

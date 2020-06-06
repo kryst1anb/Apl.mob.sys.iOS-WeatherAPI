@@ -46,6 +46,10 @@ class ThirdScreenViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        LABEL_cityName.adjustsFontSizeToFitWidth = true
+        LABEL_cityName.sizeToFit()
+        
         tableView.backgroundColor = UIColor.clear
         
         self.tableView.dataSource = self

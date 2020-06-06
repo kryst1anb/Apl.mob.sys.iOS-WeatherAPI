@@ -24,6 +24,8 @@ class HomeViewController: UIViewController, CLLocationManagerDelegate {
         
         super.viewDidLoad()
         
+        INPUT_City.adjustsFontSizeToFitWidth = true
+        
         BTN_Check.setTitleColor(UIColor(named: "ColorTextLD"), for: .normal)
         BTN_Check.tintColor = UIColor(named: "ColorTextLD")
         BTN_Check.layer.cornerRadius = 4
