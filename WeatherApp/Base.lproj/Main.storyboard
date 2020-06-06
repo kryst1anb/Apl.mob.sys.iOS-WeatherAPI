@@ -177,15 +177,17 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name of the city" textAlignment="center" clearsOnBeginEditing="YES" adjustsFontForContentSizeCategory="YES" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="uQN-yv-Cgf">
                                 <rect key="frame" x="85.666666666666671" y="321" width="203.66666666666663" height="39.666666666666686"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" name="ColorTextLD"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="39.5" id="had-nl-tKc"/>
                                     <constraint firstAttribute="width" constant="203.66999999999999" id="y63-na-rGM"/>
                                 </constraints>
+                                <color key="textColor" name="ColorTextLD"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderLabel.textColor">
-                                        <color key="value" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="0.85867936643835618" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="value" name="ColorPlaceholder"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
@@ -449,7 +451,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6sV-9J-bkC">
                                 <rect key="frame" x="0.0" y="314" width="375" height="433"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DeO-Nm-9pW">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DeO-Nm-9pW">
                                         <rect key="frame" x="10" y="10" width="355" height="413"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -565,7 +567,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="thE-tU-iba"/>
-        <segue reference="iaT-KE-SNT"/>
+        <segue reference="EBf-UP-E3k"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Humidity" width="240" height="240"/>
@@ -575,6 +577,9 @@
         <image name="background" width="3648" height="5472"/>
         <image name="location.circle.fill" catalog="system" width="128" height="121"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <namedColor name="ColorPlaceholder">
+            <color red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="0.85001070205479456" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ColorTextLD">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
